@@ -1,0 +1,23 @@
+[Unit]
+Description=Spark Connect Server
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/spark/sbin/start-connect-server.sh
+
+[Service]
+Type=forking
+WorkingDirectory=/home/spark-user
+
+User=spark-user
+Group=spark-user
+ProtectProc=invisible
+
+ExecStart=/spark/sbin/start-connect-server.sh --master spark://spark-driver-ip:7077
+Restart=on-failure
+RestartSec=10s
+
+TimeoutStopSec=infinity
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target

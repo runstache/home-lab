@@ -1,0 +1,6 @@
+MINIO_VOLUMES="/mnt/exdisk/minio"
+
+MINIO_ROOT_USER=[Admin User Name]
+MINIO_ROOT_PASSWORD=[Admin Password]
+
+MINIO_OPTS="--console-address :9001"

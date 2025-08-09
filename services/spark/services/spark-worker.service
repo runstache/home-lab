@@ -1,0 +1,23 @@
+[Unit]
+Description=Spark Worker
+Wants=network-online.target
+After=network-online.target
+AssertFileIsExecutable=/spark/sbin/start-worker.sh
+
+[Service]
+Type=forking
+WorkingDirectory=/home/spark-user
+
+User=spark-user
+Group=spark-user
+ProtectProc=invisible
+
+ExecStart=/spark/sbin/start-worker.sh spark://spark-driver-ip:7077
+Restart=on-failure
+RestartSec=10s
+
+TimeoutStopSec=infinity
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target
