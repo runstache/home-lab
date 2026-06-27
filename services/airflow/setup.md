@@ -10,7 +10,7 @@ Before installing Airflow we need to configure a few items on the VM.
 The first thing we need to do is setup a system user that the Airflow service will utilize.
 
 ```bash
-sudo adduser --system --group airflow-user
+sudo adduser --system --group --home /home/airflow-user airflow-user
 ```
 
 ### Airflow Directories
@@ -27,7 +27,7 @@ sudo chmod 777 /airflow
 
 ```
 
-### Add Python/Pip
+### Add Python/Pip/uv
 
 If not already present install python and pip.
 
@@ -43,6 +43,14 @@ sudo apt install python3-pip
 
 # Install Vitrual Env
 sudo apt install python3-venv
+
+# Install UV as the Airflow User
+sudo -u airflow-user /bin/bash
+
+# Install UV
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+
 ```
 
 ### Kubernetes Configuration
@@ -127,7 +135,7 @@ KUBECONFIG="/airflow/kubes/config"
 1. To install airflow, clone the [https://github.com/runstache/airflow-jobs](airflow-jobs) repository.
 2. Copy the /config/ folder to the __AIRFLOW_HOME__ directory
 3. Set the AIRFLOW_HOME environment variable: `export AIRFLOW_HOME="/airflow"`
-3. Create a new virtual environment in the __AIRFLOW_HOME__ locations: `python3 -m venv .venv`
+3. Create a new virtual environment in the __AIRFLOW_HOME__ location using UV: `uv venv .venv`
 4. Activate the Virtual Environment: `source ./.venv/bin/activate`
 5. Execute the Install script in the Config directory
 
@@ -189,6 +197,13 @@ sudo journalctl -u airflow.service -f
 
 ```
 
+## Assuming Airflow User
 
+Some tasks are best to do as the Airflow User. To switch your shell, do the following:
 
+```bash
 
+# Switch to Airflow User
+sudo -u airflow-user /bin/bash
+
+```
